@@ -77,7 +77,7 @@ export function generateScramble(word, length, difficulty) {
     // 1. Roll the front-lock probability once per round
     let shouldLockFront = false;
     if (difficulty === 'Easy') {
-        const prob = length === 5 ? 0.60 : length === 6 ? 0.85 : 0.95;
+        const prob = length === 5 ? 0.40 : length === 6 ? 0.60 : 0.80;
         shouldLockFront = Math.random() < prob;
     }
 
