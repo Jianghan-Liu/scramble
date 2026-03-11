@@ -2,55 +2,56 @@
   import words5 from './lib/data/words-5.json';
   import words6 from './lib/data/words-6.json';
   import words7 from './lib/data/words-7.json';
+  import { generateScramble } from './lib/scrambleLogic.js';
 
   // State
   let currentLength = $state(5);
+  let difficulty = $state("Normal");
   let targetWord = $state("");
   let scrambledWord = $state("");
   let userGuess = $state("");
+
   let score = $state(0);
   let hintsUsed = $state(0); // Total hints in session
   let revealedCount = $state(0); // Letters revealed for CURRENT word
+
   let feedbackMessage = $state("Press Enter to submit!");
   let inputElement = $state(); // Reference for auto-focus
 
   // Logic
-  function scrambleText(word) {
-    let letters = word.split('');
-    for (let i = letters.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [letters[i], letters[j]] = [letters[j], letters[i]];
-    }
-    const scrambled = letters.join('');
-    return scrambled === word ? scrambleText(word) : scrambled;
-  }
-
   function startNewRound() {
     let activeDict = currentLength === 5 ? words5 : currentLength === 6 ? words6 : words7;
     const randomIndex = Math.floor(Math.random() * activeDict.length);
     
     targetWord = activeDict[randomIndex];
-    scrambledWord = scrambleText(targetWord).toUpperCase();
+    scrambledWord = generateScramble(targetWord, currentLength, difficulty).toUpperCase();
+    
     userGuess = "";
     revealedCount = 0; // Reset hints for new word
     feedbackMessage = "Press Enter to submit!";
   }
 
   function giveHint() {
-      if (revealedCount < targetWord.length) {
-        revealedCount += 1;
-        hintsUsed += 1;
-        
-        // Auto-refocus the input after clicking the button
-        // syntax for Svelte 5 to ensure DOM is ready
-        setTimeout(() => inputElement?.focus(), 0);
-      }
+    if (revealedCount < targetWord.length) {
+      revealedCount += 1;
+      hintsUsed += 1;
+      
+      // Auto-refocus the input after clicking the button
+      setTimeout(() => inputElement?.focus(), 0);
     }
+  }
 
   function handleLengthChange(length) {
     currentLength = length;
     score = 0;
     hintsUsed = 0; 
+    startNewRound();
+  }
+
+  function handleDifficultyChange(diff) {
+    difficulty = diff;
+    score = 0;
+    hintsUsed = 0;
     startNewRound();
   }
 
@@ -83,16 +84,32 @@
     </div>
   </header>
 
-  <div class="flex gap-2 mb-12 bg-neutral-800 p-1 rounded-lg">
-    {#each [5, 6, 7] as length}
-      <button 
-        onclick={() => handleLengthChange(length)}
-        class="px-6 py-2 rounded-md text-sm font-semibold transition-colors duration-200 
-               {currentLength === length ? 'bg-indigo-600 text-white' : 'text-neutral-400 hover:text-white'}"
-      >
-        {length}L
-      </button>
-    {/each}
+  <div class="flex flex-col items-center gap-3 mb-12">
+    <div class="flex gap-2 bg-neutral-800 p-1 rounded-lg">
+      {#each [5, 6, 7] as length}
+        <button 
+          onclick={() => handleLengthChange(length)}
+          class="px-6 py-2 rounded-md text-sm font-semibold transition-colors duration-200 
+                 {currentLength === length ? 'bg-indigo-600 text-white' : 'text-neutral-400 hover:text-white'}"
+        >
+          {length}L
+        </button>
+      {/each}
+    </div>
+
+    <div class="flex gap-2 bg-neutral-800 p-1 rounded-lg">
+      {#each ["Easy", "Normal"] as diff}
+        <button 
+          onclick={() => handleDifficultyChange(diff)}
+          class="px-4 py-2 rounded-md text-sm font-semibold transition-colors duration-200 
+                 {difficulty === diff 
+                    ? (diff === 'Easy' ? 'bg-orange-500 text-white' : 'bg-indigo-600 text-white') 
+                    : 'text-neutral-400 hover:text-white'}"
+        >
+          {diff}
+        </button>
+      {/each}
+    </div>
   </div>
 
   <div class="mb-8 h-24 flex flex-col items-center justify-center">
