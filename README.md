@@ -5,9 +5,12 @@ A fast, highly functional, client-side web application for practicing anagrams a
 ## 🚀 Current Features
 * **Zero-Latency Gameplay:** 100% client-side logic with bundled static JSON dictionaries.
 * **Curated Word Lists:** Adheres to strict dictionary standards (no obscure jargon or plurals), available in 5, 6, and 7-letter lengths.
+* **Adjustable Difficulty:** Two distinct modes tailored for different practice goals:
+  * **Easy Mode:** A guided training mode where the scramble engine preserves larger chunks and frequently anchors the word's true first letter to the beginning of the string to aid pattern recognition.
+  * **Normal Mode:** True, algorithmic anagrams backed by rigorous reshuffle validation, ensuring words are thoroughly randomized without leaving obvious substrings intact.
 * **Instant Feedback Loop:** Auto-highlighting on incorrect guesses for instant re-typing.
-* **Modern Stack:** Built entirely with Svelte 5 and Tailwind CSS v4.
 * **Hint System:** A "Get Hint" button that reveals the next correct letter from the start of the word. Hints will not penalize the score but will be tracked via a separate "Hints Used" counter.
+* **Modern Stack:** Built entirely with Svelte 5 and Tailwind CSS v4.
 
 ## 🛠️ Roadmap & Future Development
 * **Distinct Game Modes:**
