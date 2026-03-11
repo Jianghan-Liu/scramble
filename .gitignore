@@ -23,6 +23,7 @@ dist-ssr
 *.sln
 *.sw?
 dev-notes.md
+statement.md
 
 # Python files
 venv/
