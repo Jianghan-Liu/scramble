@@ -84,7 +84,8 @@
     </div>
   </header>
 
-  <div class="flex flex-col items-center gap-3 mb-12">
+  <div class="flex flex-col items-center gap-3 mb-8">
+    
     <div class="flex gap-2 bg-neutral-800 p-1 rounded-lg">
       {#each [5, 6, 7] as length}
         <button 
@@ -110,6 +111,15 @@
         </button>
       {/each}
     </div>
+
+    <div class="h-4 flex items-center justify-center mt-1">
+      <p class="text-xs font-medium italic transition-opacity duration-300
+                {difficulty === 'Easy' ? 'opacity-100 text-orange-400/80' : 'opacity-0 select-none pointer-events-none'}"
+         aria-hidden={difficulty !== 'Easy'}>
+        Training wheels on: easier letter groupings to help you spot the word.
+      </p>
+    </div>
+
   </div>
 
   <div class="mb-8 h-24 flex flex-col items-center justify-center">
